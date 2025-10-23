@@ -20,5 +20,7 @@ pip install pillow
 ```
 Detalhes
 •	Frontend separado: Mantive o HTML em static/index.html para não misturar com o código Python, mantendo o projeto organizado.
+
 •	Simplicidade: Nada de frameworks pesados; tudo roda com Python e um HTML básico.
+
 •	Fácil integração: Backend e frontend comunicam-se diretamente via endpoints da API.
