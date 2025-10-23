@@ -4,7 +4,7 @@ Uma API RESTful leve para gerenciar uma galeria de imagens, com um frontend HTML
 
 Objetivo
 
-Criar uma API fácil de usar para upload, armazenamento e visualização de imagens, combinando FastAPI no backend com HTML/CSS/JS no frontend, mantendo tudo leve e simples.
+Uma API fácil de usar para upload, armazenamento e visualização de imagens, combinando FastAPI no backend com HTML/CSS/JS no frontend, mantendo tudo leve e simples.
  
 ⚙️ Tecnologias Utilizadas
 
