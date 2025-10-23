@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeria de Imagens</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f0f0f0;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 { color: #333; }
+    form { margin-bottom: 20px; }
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    .gallery img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .image-container { position: relative; display: inline-block; }
+    .delete-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+    }
+    #searchInput { margin-bottom: 10px; padding: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Galeria de Imagens</h1>
+
+  <form id="uploadForm">
+    <input type="file" id="fileInput" accept="image/*" required />
+    <button type="submit">Enviar Imagem</button>
+  </form>
+
+  <input type="text" id="searchInput" placeholder="Buscar imagem por nome..." />
+  <button onclick="buscarImagens()">Buscar</button>
+
+  <div class="gallery" id="gallery"></div>
+
+  <script>
+    const API_URL = "http://127.0.0.1:8000";
+
+    async function carregarImagens(query = "") {
+      const url = query ? `${API_URL}/search/${query}` : `${API_URL}/list/`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const gallery = document.getElementById("gallery");
+      gallery.innerHTML = "";
+
+      data.imagens.forEach(nome => {
+        const container = document.createElement("div");
+        container.className = "image-container";
+
+        const img = document.createElement("img");
+        img.src = `${API_URL}/download/${nome}`;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete-btn";
+        deleteBtn.textContent = "X";
+        deleteBtn.onclick = () => deletarImagem(nome);
+
+        container.appendChild(img);
+        container.appendChild(deleteBtn);
+        gallery.appendChild(container);
+      });
+    }
+
+    async function deletarImagem(filename) {
+      if (confirm(`Deletar ${filename}?`)) {
+        await fetch(`${API_URL}/delete/${filename}`, { method: "DELETE" });
+        carregarImagens();
+      }
+    }
+
+    function buscarImagens() {
+      const query = document.getElementById("searchInput").value.trim();
+      carregarImagens(query);
+    }
+
+    document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById("fileInput");
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+      
+      await fetch(`${API_URL}/upload/`, {
+        method: "POST",
+        body: formData
+      });
+      fileInput.value = "";
+      carregarImagens();
+    });
+
+    carregarImagens();
+  </script>
+</body>
+</html>
