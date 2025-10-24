@@ -36,7 +36,6 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 # ROTAS PRINCIPAIS
 
-
 @app.get("/")
 def serve_index():
     """Serve o arquivo HTML principal"""
