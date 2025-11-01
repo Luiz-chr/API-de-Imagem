@@ -8,13 +8,5 @@ def setup_static(app):
 
 def get_favicon():
     if os.path.exists(FAVICON_PATH):
-        return FileResponse(FAVICON_PATH)
-
-    from io import BytesIO
-    from PIL import Image
-
-    img = Image.new("RGBA", (16, 16), (0, 123, 255))
-    buffer = BytesIO()
-    img.save(buffer, format="ICO")
-    buffer.seek(0)
-    return FileResponse(buffer, media_type="image/x-icon")
+        return FileResponse(FAVICON_PATH, media_type="image/x-icon")
+    return {"error": "favicon.ico não encontrado"}

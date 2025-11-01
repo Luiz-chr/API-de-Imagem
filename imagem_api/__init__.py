@@ -1,1 +1,0 @@
-# uvicorn imagem_api.main:app --reload #
